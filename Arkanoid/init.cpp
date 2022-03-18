@@ -30,7 +30,7 @@ void INIT_BALL() {
 	ball.y = player.y - ball.radius * 2;
 	ball.posX = ball.x + ball.radius;
 	ball.posY = ball.y + ball.radius;
-	ball.texture = loadTexture("ball.png");
+	ball.texture = loadTexture("img/ball.png");
 	ball.isMovingWithPlayer = true;
 	player.numOfBall++;
 }
@@ -63,7 +63,7 @@ void INIT_BRICKS() {
 			bricks[i][j].posX = bricks[i][j].x + bricks[i][j].width / 2;
 			bricks[i][j].posY = bricks[i][j].y + bricks[i][j].height / 2;
 
-			string brickTextureName = "12864brick";
+			string brickTextureName = "img/12864brick";
 			string brickLife = std::to_string(bricks[i][j].life);
 			brickTextureName.append(brickLife);
 			brickTextureName.append(".png");

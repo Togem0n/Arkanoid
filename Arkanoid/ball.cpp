@@ -108,7 +108,7 @@ void Ball::setSpeedWhenCollideWithBrick() {
 				player.currentPoint += 1;
 				collionCounter++;
 
-				string brickTextureName = "12864brick";
+				string brickTextureName = "img/12864brick";
 				string brickLife = std::to_string(bricks[i][j].life);
 				brickTextureName.append(brickLife);
 				brickTextureName.append(".png");
@@ -124,7 +124,7 @@ void Ball::setSpeedWhenCollideWithBrick() {
 				player.currentPoint += 1;
 				collionCounter++;
 
-				string brickTextureName = "12864brick";
+				string brickTextureName = "img/12864brick";
 				string brickLife = std::to_string(bricks[i][j].life);
 				brickTextureName.append(brickLife);
 				brickTextureName.append(".png");

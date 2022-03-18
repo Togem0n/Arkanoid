@@ -52,7 +52,7 @@ void Player::drawBall() {
 }
 
 void Player::resetTexture() {
-	string playerTextureName = "player";
+	string playerTextureName = "img/player";
 	string playerLife = std::to_string(player.life);
 	playerTextureName.append(playerLife);
 	playerTextureName.append(".png");
