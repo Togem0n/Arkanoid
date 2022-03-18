@@ -15,54 +15,17 @@
 
 int main(int argc, char* args[])
 {
+	// Initialization
+
 	INIT_SDL();
-	bool running = true;
+
+	INIT_PLAYER();
+
+	INIT_BALL();
+
+	INIT_BRICKS();
+
 	Uint64 previous_ticks = SDL_GetPerformanceCounter();
-
-	// init player pos
-	player.x = 512;
-	player.y = 700;
-	player.posX = player.x + player.width / 2;
-	player.posY = player.y; //define pos of player in up middle of rect
-
-	// init ball pos
-	ball.x = player.x + player.width / 2 - ball.radius;
-	ball.y = player.y - ball.radius * 2;
-	ball.posX = ball.x + ball.radius;
-	ball.posY = ball.y + ball.radius;
-
-	// init play&ball's texture
-	player.texture = loadTexture("player.png");
-	ball.texture = loadTexture("ball.png");
-
-	// read level from file
-	vector<string> level = readLevel("level.txt");
-
-	for (int i = 0; i < level.size(); i++) {
-		std::cout << level[i] << std::endl;
-	}
-
-	// init bricks
-	for (int i = 0; i < Row; i++) {
-		for (int j = 0; j < Column; j++) {
-			if (level[i][j] == '0') {
-				continue;
-			}
-			bricks[i][j].life = level[i][j] - '0';
-			bricks[i][j].x = j * bricks[i][j].width;
-			bricks[i][j].y = i * bricks[i][j].height;
-			bricks[i][j].posX = bricks[i][j].x + bricks[i][j].width / 2;
-			bricks[i][j].posY = bricks[i][j].y + bricks[i][j].height / 2;
-			bricks[i][j].texture = loadTexture("12864brick.png");
-		}
-	}
-
-	for (int i = 0; i < Row; i++) {
-		for (int j = 0; j < Column; j++) {
-			std::cout << "(" << bricks[i][j].x << ", " << bricks[i][j].y << ") ";
-		}
-		std::cout << std::endl;
-	}
 
 	while (1)
 	{
@@ -71,33 +34,43 @@ int main(int argc, char* args[])
 		previous_ticks = ticks; 
 		delta_time = (float)delta_ticks / SDL_GetPerformanceFrequency(); 
 
-		prepareScene();
-
+		prepareScene();	
 		GetInput();
- 
-		player.move();
-		ball.update();
-		
-		for (int i = 0; i < Row; i++) {
-			for (int j = 0; j < Column; j++) {
-				//bricks[i][j].draw();
-				if (bricks[i][j].life <= 0) {
-					continue;
+
+		if (inGame) {
+			// win or die
+			CHECK_CONDITION();
+			NEW_BALL();
+
+			// update()
+			player.move();
+
+			for (int i = 0; i < BALL_MAX; i++) {
+				if (balls[i].isAlive) {
+					balls[i].update();
 				}
-				if (bricks[i][j].getHit) {
-					bricks[i][j].getHitTimer++;
-					if (bricks[i][j].getHitTimer > 25) {
-						bricks[i][j].getHitTimer = 0;
-						bricks[i][j].getHit = false;
-						bricks[i][j].texture = loadTexture("12864brick.png");
-					}
-				}
-				blit(bricks[i][j].texture, bricks[i][j].x, bricks[i][j].y);
 			}
+			// ball.update();
+
+			// draw stuffs
+			Draw_Player();
+			Draw_Ball();
+			Draw_Bricks();
 		}
-		//std::cout << delta_time << std::endl;
-		blit(player.texture, player.x, player.y);
-		blit(ball.texture, ball.x, ball.y);
+		else if(inWinning && keys[SDL_SCANCODE_SPACE]){
+			GO_NEXTLEVEL();
+		}
+		else if (isLose && keys[SDL_SCANCODE_SPACE]) {
+			RESTART_LEVEL();
+		}
+
+		if (inWinning && !inGame) {
+			Draw_Win();
+		}
+
+		if (isLose && !inGame) {
+			Draw_Lose();
+		}
 
 		presentScene();
 

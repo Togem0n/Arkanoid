@@ -8,7 +8,3 @@ void Brick::draw() {
 	SDL_Rect rect = { (int)x, (int)y, width, height };
 	SDL_RenderFillRect(renderer, &rect);
 }
-
-void Init_Bricks() {
-
-}

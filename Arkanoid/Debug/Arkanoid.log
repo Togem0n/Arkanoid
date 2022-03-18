@@ -1,0 +1,22 @@
+﻿  ball.cpp
+D:\Arkanoid\Arkanoid\Arkanoid\ball.cpp(64,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  brick.cpp
+  draw.cpp
+D:\Arkanoid\Arkanoid\Arkanoid\draw.cpp(42,39): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Arkanoid\Arkanoid\Arkanoid\draw.cpp(42,29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Arkanoid\Arkanoid\Arkanoid\draw.cpp(50,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Arkanoid\Arkanoid\Arkanoid\draw.cpp(50,35): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Arkanoid\Arkanoid\Arkanoid\draw.cpp(76,59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Arkanoid\Arkanoid\Arkanoid\draw.cpp(76,43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  game.cpp
+  init.cpp
+D:\Arkanoid\Arkanoid\Arkanoid\init.cpp(47,20): warning C4018: '<': signed/unsigned mismatch
+D:\Arkanoid\Arkanoid\Arkanoid\init.cpp(61,23): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Arkanoid\Arkanoid\Arkanoid\init.cpp(62,23): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  main.cpp
+  player.cpp
+  readfile.cpp
+D:\Arkanoid\Arkanoid\Arkanoid\readfile.cpp(18,23): warning C4018: '<': signed/unsigned mismatch
+D:\Arkanoid\Arkanoid\Arkanoid\readfile.cpp(19,27): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Arkanoid.vcxproj -> D:\Arkanoid\Arkanoid\Debug\Arkanoid.exe

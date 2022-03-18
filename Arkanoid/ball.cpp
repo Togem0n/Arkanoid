@@ -2,7 +2,11 @@
 #include <game.h>
 #include <engine.h>
 #include <draw.h>
+#include <init.h>
 #include <SDL_image.h>
+#include <string>
+
+using std::string;
 
 #define PI 3.1415926
 
@@ -26,10 +30,10 @@ void Ball::moveWithPlayer() {
 
 void Ball::setSpeedWhenCollideWithPlayer() {
 
-	if ((ball.posY + ball.ySpeed * delta_time + ball.radius >= player.posY) && abs(ball.posX + ball.xSpeed * delta_time - player.posX) <= ball.radius + player.width / 2) {
+	if ((posY + ySpeed * delta_time + radius >= player.posY) && abs(posX + xSpeed * delta_time - player.posX) <= radius + player.width / 2) {
 
 		// diff range [0, player.width/2] [0, 64]
-		float diff = ball.posX - player.posX;
+		float diff = posX - player.posX;
 		// ratio range [0, 100]
 		float ratio = diff / (player.width / 2);
 		// angle range [0, 90] means angle with verticle
@@ -42,22 +46,22 @@ void Ball::setSpeedWhenCollideWithPlayer() {
 }
 
 void Ball::setSpeedWhenCollideWithWall() {
-	if (ball.posX + ball.xSpeed * delta_time + ball.radius >= Screen_Width || ball.posX + ball.xSpeed * delta_time - ball.radius <= 0) {
-		ball.xSpeed = - ball.xSpeed;
-		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "leftright");
-		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "xSpeed%f", xSpeed);
+	if (posX + xSpeed * delta_time + radius >= Screen_Width || posX + xSpeed * delta_time - radius <= 0) {
+		xSpeed = - xSpeed;
+		//SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "leftright");
+		//SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "xSpeed%f", xSpeed);
 	}
 
-	if (ball.posY + ball.ySpeed * delta_time + ball.radius >= Screen_Height || ball.posY + ball.ySpeed * delta_time - ball.radius <= 0) {
-		ball.ySpeed = -ball.ySpeed;
-		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "updown");
-		SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "ySpeed%f", ySpeed);
+	if (posY + ySpeed * delta_time + radius >= Screen_Height || posY + ySpeed * delta_time - radius <= 0) {
+		ySpeed = -ySpeed;
+		//SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "updown");
+		//SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "ySpeed%f", ySpeed);
 	}
 }
 
 void Ball::setSpeedWhenCollideWithBrick() {
 
-	float max_dis = ball.radius + sqrt(pow(bricks[0][0].width, 2) + pow(bricks[0][0].height, 2)) / 2;
+	float max_dis = radius + sqrt(pow(bricks[0][0].width, 2) + pow(bricks[0][0].height, 2)) / 2;
 
 	for (int i = 0; i < Row; i++) {
 		for (int j = 0; j < Column; j++) {
@@ -68,10 +72,10 @@ void Ball::setSpeedWhenCollideWithBrick() {
 
 			// collide ???
 			// + ball.ySpeed * delta_time
-			float diffX = abs(ball.posX - bricks[i][j].posX);
-			float diffY = abs(ball.posY - bricks[i][j].posY);
-			float next_diffX = abs(ball.posX + ball.xSpeed * delta_time - bricks[i][j].posX);
-			float next_diffY = abs(ball.posY + ball.ySpeed * delta_time - bricks[i][j].posY);
+			float diffX = abs(posX - bricks[i][j].posX);
+			float diffY = abs(posY - bricks[i][j].posY);
+			float next_diffX = abs(posX + xSpeed * delta_time - bricks[i][j].posX);
+			float next_diffY = abs(posY + ySpeed * delta_time - bricks[i][j].posY);
 
 			// why this doesnt work?
 			//if ((diffY > ball.radius + bricks[i][j].height / 2) && (diffX <= ball.radius + bricks[i][j].width / 2)) {
@@ -97,25 +101,70 @@ void Ball::setSpeedWhenCollideWithBrick() {
 			//}
 			
 			// why this work?
-			if ((next_diffY <= ball.radius + bricks[i][j].height / 2) && (diffX <= ball.radius + bricks[i][j].width / 2)) {
+			if ((next_diffY <= radius + bricks[i][j].height / 2) && (diffX <= radius + bricks[i][j].width / 2)) {
 
-				ball.ySpeed *= -1;
+				ySpeed *= -1;
 				bricks[i][j].life -= 1;
-				bricks[i][j].getHit = true;
-				bricks[i][j].texture = loadTexture("12864brickGetHit.png");
-				SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "collide top bottom");
+				player.currentPoint += 1;
+				collionCounter++;
+
+				string brickTextureName = "12864brick";
+				string brickLife = std::to_string(bricks[i][j].life);
+				brickTextureName.append(brickLife);
+				brickTextureName.append(".png");
+				bricks[i][j].texture = loadTexture(brickTextureName.c_str());
+				
+				std::cout << "Current Point: " << int(100*player.currentPoint/player.currentGoal) << "%" << std::endl;
+
 			}
-			else if ((next_diffX <= ball.radius + bricks[i][j].width / 2) && (diffY <= ball.radius + bricks[i][j].height / 2)) {
+			else if ((next_diffX <= radius + bricks[i][j].width / 2) && (diffY <= radius + bricks[i][j].height / 2)) {
 
-				ball.xSpeed *= -1;
+				xSpeed *= -1;
 				bricks[i][j].life -= 1;
-				bricks[i][j].getHit = true;
-				bricks[i][j].texture = loadTexture("12864brickGetHit.png");
-				SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "collide left right");
+				player.currentPoint += 1;
+				collionCounter++;
+
+				string brickTextureName = "12864brick";
+				string brickLife = std::to_string(bricks[i][j].life);
+				brickTextureName.append(brickLife);
+				brickTextureName.append(".png");
+				bricks[i][j].texture = loadTexture(brickTextureName.c_str());
+
+				std::cout << "Current point: " << int(100*player.currentPoint/player.currentGoal) << "%" << std::endl;
+
 			}
 
 		}
 	}
+}
+
+void Ball::checkDead() {
+	if ((posY >= player.posY) && abs(posX - player.posX) > radius + player.width / 2) {
+		int cnt = 0;
+		for (int i = 0; i < BALL_MAX; i++) {
+			if (balls[i].isAlive) {
+				cnt++;
+			}
+		}
+		if (cnt == 1) {
+			resetBall();
+			player.life--;
+			player.resetTexture();
+		}
+		else {
+			isAlive = false;
+			//collionCounter = 0;
+		}
+	}
+}
+
+void Ball::resetBall() {
+	x = player.x + player.width / 2 - radius;
+	y = player.y - radius * 2;
+	collionCounter = 0;
+	posX = x + radius;
+	posY = y + radius;
+	isMovingWithPlayer = true;
 }
 
 void Ball::update() {
@@ -123,6 +172,7 @@ void Ball::update() {
 		moveWithPlayer();
 	}
 	else {
+		checkDead();
 		setSpeedWhenCollideWithPlayer();
 		setSpeedWhenCollideWithWall();
 		setSpeedWhenCollideWithBrick();

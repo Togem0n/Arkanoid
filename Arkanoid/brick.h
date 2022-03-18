@@ -5,8 +5,8 @@ struct Brick
 {
 	float x = -1;
 	float y = -1;
-	float posX;
-	float posY;
+	float posX = -1;
+	float posY = -1;
 	SDL_Texture* texture;
 	bool getHit = false;
 	int getHitTimer = 0;
@@ -19,7 +19,7 @@ struct Brick
 	int width = 128;
 	int height = 64;
 
-	int life = 5;
+	int life = 0;
 
 	void draw();
 };
