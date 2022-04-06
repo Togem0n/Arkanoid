@@ -11,6 +11,9 @@ using std::string;
 #define PI 3.1415926
 
 void Ball::move() {
+	// feedback: the "common" approach is to call this function as "update", since moving is one of different things that might happen with a ball after the time step.
+	// Also delta_time is usually passed to update function as a parameter but not as a global variable. This would make the code more readable and well-structured,
+	// since at this moment delta_time is an external thing to the Ball class which also kinda breaks the OOP
 	x += xSpeed * delta_time;
 	y += ySpeed * delta_time;
 	posX = x + radius;
@@ -18,6 +21,7 @@ void Ball::move() {
 }
 
 void Ball::moveWithPlayer() {
+	// feedback: not sure I fully understand the intent to have a different move function. Could it be combined with the one above perhaps?
 	if (keys[SDL_SCANCODE_D]) {
 		x += player.speed * delta_time;
 		posX = x + radius;
@@ -48,6 +52,8 @@ void Ball::setSpeedWhenCollideWithPlayer() {
 void Ball::setSpeedWhenCollideWithWall() {
 	if (posX + xSpeed * delta_time + radius >= Screen_Width || posX + xSpeed * delta_time - radius <= 0) {
 		xSpeed = - xSpeed;
+		// feedback: quite a lot of commented out code in different places! Would be more readable to remove the comments.
+		
 		//SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "leftright");
 		//SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "xSpeed%f", xSpeed);
 	}

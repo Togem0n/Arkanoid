@@ -2,7 +2,7 @@
 #include <engine.h>
 
 void Projectile::update() {
-	if (!alive) return;
+	if (!alive) return; // feedback: styling: usually return statements are always placed in a new line for better readability
 	x += 400 * delta_time;
 }
 

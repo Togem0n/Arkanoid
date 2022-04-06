@@ -21,7 +21,8 @@ SDL_Texture *loadTexture(const char *filename)
 
 	//SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
 
-	texture = IMG_LoadTexture(renderer, filename);
+	texture = IMG_LoadTexture(renderer, filename); // feedback: doesn't seem like SDL_DestroyTexture is called anywhere in your code
+													// for the allocated texture. Without doing it its likely that you have a memory leak
 
 	return texture;
 }
@@ -84,6 +85,8 @@ void Draw_Win() {
 }
 
 void Draw_Lose() {
+	// feedback: is there a reason you load the texture every time you want to draw it? It would be more efficient to save it somewhere and load
+	// only the first time. And then just blit it when you want to draw it. It is also leaking the texture as you overwrite it every time.
 	SDL_Texture* loseTexture = loadTexture("lose.png");;
 	blit(loseTexture, 0, 0);
 }
