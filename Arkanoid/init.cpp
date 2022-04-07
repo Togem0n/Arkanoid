@@ -81,7 +81,9 @@ void INIT_BRICKS() {
 	std::cout << "Total goal: " << player.currentGoal << std::endl;
 }
 
-void CHECK_CONDITION() {
+void CHECK_CONDITION() { // feedback: the naming of this function is quite generic, it could have a name that is more representative like "CheckWinState"
+						// Also some styling feedback - some functions like this one have all letters uppercase. But others - don't. It's good to follow
+						// consitent naming style.
 	if (player.currentPoint >= player.currentGoal && inGame) {
 		currentLevel += 1;
 		inGame = false;

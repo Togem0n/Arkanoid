@@ -1,5 +1,7 @@
 #include <game.h>
 
+// feedback: a similar comment to what I did in engine.cpp. Would be nice to see some logic here instead of global vars declarations.
+
 Player player;
 //Ball ball;
 Ball balls[BALL_MAX];

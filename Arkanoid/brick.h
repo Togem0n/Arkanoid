@@ -3,6 +3,8 @@
 
 struct Brick
 {
+	// feedback: would be nice to see more object-oriented approach here. For example encapsulate the texture member in functions instead of just exposing it.
+	// Similar comment is relevant to ball.h file as well.
 	float x = -1;
 	float y = -1;
 	float posX = -1;

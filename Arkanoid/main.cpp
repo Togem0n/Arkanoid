@@ -40,7 +40,8 @@ int main(int argc, char* args[])
 		if (inGame) {
 			// win or die
 			CHECK_CONDITION();
-			NEW_BALL();
+			NEW_BALL(); // feedback: I'd change the name of this function to something that describes more what it is doing.
+						// Right now when I read this, it feels like it will always spawn a new ball each update.
 
 			// update()
 			player.move();
